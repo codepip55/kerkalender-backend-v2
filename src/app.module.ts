@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { LoggingFilter } from './utils/logging.filter';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ServicesModule } from './services/services.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
+    ServicesModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [
