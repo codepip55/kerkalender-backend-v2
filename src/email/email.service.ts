@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as sgMail from '@sendgrid/mail';
-import { ConfigService } from "@nestjs/config";
+import { ConfigService } from '@nestjs/config';
 
 export enum EmailTemplates {
   NOTIFICATION = 'd-49ec9f8f435b4eb08bd20331618f3e3a',
@@ -46,7 +46,7 @@ export class EmailService {
 
     try {
       await sgMail.send(msg);
-      return { success: true }
+      return { success: true };
     } catch (err) {
       console.error('Sendgrid error:', err);
       if (err.response) {

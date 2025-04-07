@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ServicesService } from './services.service';
-import { JwtAuthGuard } from "../auth/jwt/jwt-auth.guard";
-import { ServiceDto } from "./dto/service.dto";
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { ServiceDto } from './dto/service.dto';
 
 @Controller('services')
 export class ServicesController {

@@ -1,5 +1,5 @@
-import { IsArray, IsDate, IsNotEmpty, IsString } from "class-validator";
-import { User } from "../../users/schemas/user.schema";
+import { IsArray, IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { User } from '../../users/schemas/user.schema';
 
 export class ServiceDto {
   @IsString()

@@ -4,7 +4,7 @@ import { Service, ServiceDocument } from './schemas/services.schema';
 import { Model, SortOrder } from 'mongoose';
 import { ServiceDto } from './dto/service.dto';
 import { EmailService, EmailTemplates } from '../email/email.service';
-import { ConfigService } from "@nestjs/config";
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ServicesService {
