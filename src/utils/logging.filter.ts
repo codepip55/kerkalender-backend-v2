@@ -1,5 +1,11 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
-import { Request, Response } from "express";
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { Response } from 'express';
 
 const ignoreStatuses = [401, 403];
 
@@ -8,7 +14,7 @@ export class LoggingFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    // const request = ctx.getRequest<Request>();
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
@@ -16,7 +22,7 @@ export class LoggingFilter implements ExceptionFilter {
     const message =
       exception instanceof HttpException
         ? exception.getResponse()
-        : "Internal server error";
+        : 'Internal server error';
 
     let eventId: string;
     if (!ignoreStatuses.includes(status)) {

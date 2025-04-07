@@ -1,9 +1,9 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { HttpService } from "@nestjs/axios";
-import { JwtService } from "@nestjs/jwt";
-import { ConfigService } from "@nestjs/config";
-import { firstValueFrom } from "rxjs";
-import { UsersService } from "../users/users.service";
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { firstValueFrom } from 'rxjs';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +12,7 @@ export class AuthService {
     private configService: ConfigService,
     private http: HttpService,
     private userService: UsersService,
-  ) { }
+  ) {}
 
   getTokens(user: any) {
     const payload = { sub: user.user._id };
@@ -37,7 +37,9 @@ export class AuthService {
       refresh_token: refreshToken,
     });
 
-    const tokenURL = this.configService.get<string>('KERKALENDER_AUTH_TOKEN_URL');
+    const tokenURL = this.configService.get<string>(
+      'KERKALENDER_AUTH_TOKEN_URL',
+    );
     const $creds = this.http.post(tokenURL, params.toString(), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -48,10 +50,13 @@ export class AuthService {
     try {
       creds = (await firstValueFrom($creds)).data;
     } catch (err) {
+      console.error(err);
       throw new UnauthorizedException();
     }
 
-    const userURL = this.configService.get<string>('KERKALENDER_AUTH_USER_INFO_URL');
+    const userURL = this.configService.get<string>(
+      'KERKALENDER_AUTH_USER_INFO_URL',
+    );
     const $user = this.http.get(userURL, {
       headers: {
         Authorization: `Bearer ${creds.access_token}`,
@@ -69,6 +74,7 @@ export class AuthService {
         newRefreshToken: creds.refresh_token,
       };
     } catch (err) {
+      console.error(err);
       throw new UnauthorizedException();
     }
   }

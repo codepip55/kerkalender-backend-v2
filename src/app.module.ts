@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
-import { LoggingFilter } from "./utils/logging.filter";
+import { LoggingFilter } from './utils/logging.filter';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 
@@ -24,8 +24,8 @@ import { UsersModule } from './users/users.module';
   providers: [
     {
       provide: 'APP_FILTER',
-      useClass: LoggingFilter
-    }
+      useClass: LoggingFilter,
+    },
   ],
 })
 export class AppModule {}

@@ -9,7 +9,10 @@ import { firstValueFrom } from 'rxjs';
 import { UsersService } from '../../users/users.service';
 
 @Injectable()
-export class VatsimStrategy extends PassportStrategy(Strategy, 'vatsim') {
+export class KerkalenderStrategy extends PassportStrategy(
+  Strategy,
+  'kerkalender',
+) {
   constructor(
     private usersService: UsersService,
     private configService: ConfigService,
@@ -21,12 +24,14 @@ export class VatsimStrategy extends PassportStrategy(Strategy, 'vatsim') {
       clientID: configService.get<string>('KERKALENDER_AUTH_CLIENT_ID'),
       clientSecret: configService.get<string>('KERKALENDER_AUTH_CLIENT_SECRET'),
       callbackURL: configService.get<string>('KERKALENDER_AUTH_CALLBACK_URL'),
-      scope: 'full_name',
+      scope: '',
     });
   }
 
   async validate(accessToken: string, refreshToken: string): Promise<any> {
-    const userURL = this.configService.get<string>('KERKALENDER_AUTH_USER_INFO_URL');
+    const userURL = this.configService.get<string>(
+      'KERKALENDER_AUTH_USER_INFO_URL',
+    );
     const user$ = this.http.get(userURL, {
       headers: {
         Accept: 'application/json',
@@ -38,19 +43,16 @@ export class VatsimStrategy extends PassportStrategy(Strategy, 'vatsim') {
     // Update user or create if none exists
     let user = null;
     try {
-      user = await this.usersService.findById(response.data.data.id);
-      user = await this.usersService.findByCidAndUpdate(
-        response.data.data.cid,
-        {
-          cid: response.data.data.cid,
-          nameFull: response.data.data.personal.name_full,
-        }
-      });
+      user = await this.usersService.findByCidAndUpdate(response.data.cid, {
+          cid: response.data.cid,
+          nameFull: response.data.name,
+        },
+      );
     } catch (err) {
       if (err instanceof NotFoundException) {
         user = await this.usersService.createUser({
-          cid: response.data.data.id,
-          nameFull: response.data.data.personal.name_full,
+          cid: response.data.cid,
+          nameFull: response.data.name,
         });
       } else {
         throw err;

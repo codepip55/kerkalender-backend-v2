@@ -1,15 +1,22 @@
-import { Controller, Get, Req, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
-import { AuthService } from "./auth.service";
-import { ConfigService } from "@nestjs/config";
-import { Request, Response } from "express";
-import { KerkalenderAuthGuard } from "./kerkalender/kerkalender-auth.guard";
+import {
+  Controller,
+  Get,
+  Req,
+  Res,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { ConfigService } from '@nestjs/config';
+import { Request, Response } from 'express';
+import { KerkalenderAuthGuard } from './kerkalender/kerkalender-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor (
+  constructor(
     private authService: AuthService,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   /**
    * Redirect user to this route to initiate login process.
@@ -20,7 +27,7 @@ export class AuthController {
   @UseGuards(KerkalenderAuthGuard)
   getUserFromKerkalenderLogin(
     @Req() req: Request,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
     const { token, expiresIn, refreshToken } = this.authService.getTokens(
       req.user,
