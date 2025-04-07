@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ConfigService } from "@nestjs/config";
+import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
-import { ValidationPipe } from "@nestjs/common";
+import { ValidationPipe } from '@nestjs/common';
 import * as helmet from 'helmet';
 
 async function bootstrap() {
@@ -16,7 +16,7 @@ async function bootstrap() {
   // Enable CORS
   app.enableCors({
     origin: [/pepijncolenbrander\.com$/, /localhost(:\d+)?$/],
-    credentials: true
+    credentials: true,
   });
 
   // Configure validation pipes
