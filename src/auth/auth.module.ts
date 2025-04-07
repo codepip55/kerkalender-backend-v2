@@ -5,9 +5,9 @@ import { HttpModule } from '@nestjs/axios';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { UsersModule } from "../users/users.module";
-import { KerkalenderStrategy } from "./kerkalender/kerkalender.strategy";
-import { JwtStrategy } from "./jwt/jwt.strategy";
+import { UsersModule } from '../users/users.module';
+import { KerkalenderStrategy } from './kerkalender/kerkalender.strategy';
+import { JwtStrategy } from './jwt/jwt.strategy';
 
 @Module({
   imports: [
