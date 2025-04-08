@@ -39,6 +39,7 @@ export class UsersService {
       throw new NotFoundException();
     }
 
+    user.email = dto.email;
     user.nameFull = dto.nameFull;
     user.updatedAt = new Date();
 

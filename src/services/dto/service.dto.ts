@@ -37,7 +37,7 @@ export class ServiceDto {
       name: string;
       users: {
         user: User;
-        status: 'accepted' | 'waiting' | 'rejected';
+        status: 'accepted' | 'waiting' | 'declined';
       }[];
     }[];
   }[];

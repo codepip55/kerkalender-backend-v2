@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { RequestsService } from './requests.service';
+import { ServicesModule } from '../services/services.module';
 
 @Module({
+  imports: [forwardRef(() => ServicesModule)],
   providers: [RequestsService],
-  controllers: [],
+  exports: [RequestsService],
 })
 export class RequestsModule {}

@@ -64,7 +64,7 @@ export class AuthService {
     });
 
     try {
-      const ssoUser = (await firstValueFrom($user)).data.data;
+      const ssoUser = (await firstValueFrom($user)).data;
       const user = await this.userService.findByCid(ssoUser.cid);
 
       return {
