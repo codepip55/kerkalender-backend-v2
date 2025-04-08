@@ -40,7 +40,7 @@ export class RequestsService {
     cid: number,
   ) {
     const service = await this.servcesService.findServiceById(
-      request.service.id,
+      request.service._id,
     );
     if (!service) {
       throw new NotFoundException('Service not found');
