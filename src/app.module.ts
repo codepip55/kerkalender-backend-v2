@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { ServicesModule } from './services/services.module';
 import { EmailModule } from './email/email.module';
 import { SetlistsModule } from './setlists/setlists.module';
+import { RequestsModule } from './requests/requests.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SetlistsModule } from './setlists/setlists.module';
     ServicesModule,
     EmailModule,
     SetlistsModule,
+    RequestsModule,
   ],
   controllers: [AppController],
   providers: [
