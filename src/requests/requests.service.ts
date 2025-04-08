@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ServicesService } from '../services/services.service';
-import { User } from '../users/schemas/user.schema';
-import { Service } from '../services/schemas/services.schema';
 import { ServiceDto } from '../services/dto/service.dto';
+import { Request } from './models/request.model';
 
 @Injectable()
 export class RequestsService {
@@ -71,26 +70,4 @@ export class RequestsService {
     // Update service
     return await this.servcesService.updateServiceById(service.id, serviceDto);
   }
-}
-class Request {
-  team: {
-    name: string;
-    positions: {
-      name: string;
-      users: {
-        user: User;
-        status: 'accepted' | 'waiting' | 'declined';
-      }[];
-    }[];
-  };
-  position: {
-    name: string;
-    users: {
-      user: User;
-      status: 'accepted' | 'waiting' | 'declined';
-    }[];
-  };
-  service: Service;
-  status: 'accepted' | 'waiting' | 'declined';
-  user: User;
 }

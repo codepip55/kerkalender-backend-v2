@@ -7,15 +7,23 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { ServiceDto } from './dto/service.dto';
+import { Request } from 'express';
+import { User } from '../users/schemas/user.schema';
+import { RequestsService } from '../requests/requests.service';
+import { RequestDto } from '../requests/dto/request.dto';
 
 @Controller('services')
 export class ServicesController {
-  constructor(private servicesService: ServicesService) {}
+  constructor(
+    private servicesService: ServicesService,
+    private reqestsService: RequestsService,
+  ) {}
 
   /**
    * Get all services
@@ -48,5 +56,21 @@ export class ServicesController {
   @UseGuards(JwtAuthGuard)
   deleteService(@Param('id') id: string) {
     return this.servicesService.deleteServiceById(id);
+  }
+
+  @Get('requests')
+  @UseGuards(JwtAuthGuard)
+  getRequests(@Req() req: Request) {
+    const user = req.user as User;
+
+    return this.reqestsService.getRequestsByUserId(user.id);
+  }
+
+  @Put('requests')
+  @UseGuards(JwtAuthGuard)
+  updateRequestStatus(@Body() dto: RequestDto, @Req() req: Request) {
+    const user = req.user as User;
+
+    return this.reqestsService.updateRequestStatus(dto, dto.status, user.id);
   }
 }
