@@ -1,4 +1,15 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { SetlistsService } from './setlists.service';
 import { SetlistDto } from './dto/setlist.dto';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
