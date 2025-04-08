@@ -8,7 +8,7 @@ import { ServiceSchema } from './schemas/services.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'service', schema: ServiceSchema }]),
-    EmailModule
+    EmailModule,
   ],
   providers: [ServicesService],
   controllers: [ServicesController],

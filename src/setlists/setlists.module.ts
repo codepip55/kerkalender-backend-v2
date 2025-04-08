@@ -4,6 +4,6 @@ import { SetlistsService } from './setlists.service';
 
 @Module({
   controllers: [SetlistsController],
-  providers: [SetlistsService]
+  providers: [SetlistsService],
 })
 export class SetlistsModule {}
