@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -41,5 +41,11 @@ export class ServicesController {
   @UseGuards(JwtAuthGuard)
   updateService(@Param('id') id: string, @Body() dto: ServiceDto) {
     return this.servicesService.updateServiceById(id, dto);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  deleteService(@Param('id') id: string) {
+    return this.servicesService.deleteServiceById(id);
   }
 }
