@@ -13,7 +13,7 @@ export class ServicesService {
     @InjectModel('service') private serviceModel: Model<ServiceDocument>,
     private emailService: EmailService,
     private configService: ConfigService,
-    private usersService: UsersService
+    private usersService: UsersService,
   ) {}
 
   async findServices(qs: Record<string, string>) {
@@ -87,7 +87,7 @@ export class ServicesService {
     const service = await this.serviceModel
       .findById(id)
       .populate('service_manager')
-      .populate('teams.positions.users.user');;
+      .populate('teams.positions.users.user');
     if (!service) {
       throw new NotFoundException();
     }
