@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 import { User } from '../../users/schemas/user.schema';
 
 export class ServiceDto {
@@ -6,17 +6,17 @@ export class ServiceDto {
   @IsNotEmpty()
   title: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  date: Date;
+  date: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  startTime: Date;
+  startTime: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  endTime: Date;
+  endTime: string;
 
   @IsString()
   @IsNotEmpty()

@@ -8,6 +8,13 @@ import { UserDto } from './dto/user.dto';
 export class UsersService {
   constructor(@InjectModel('user') private userModel: Model<UserDocument>) {}
 
+  async findAllUsers() {
+    const users = await this.userModel.find();
+    if (!users) {
+      throw new NotFoundException();
+    }
+    return users;
+  }
   async createUser(dto: UserDto) {
     const user = new this.userModel({
       ...dto,

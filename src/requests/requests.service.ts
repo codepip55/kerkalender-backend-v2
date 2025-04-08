@@ -6,7 +6,7 @@ import { Request } from './models/request.model';
 @Injectable()
 export class RequestsService {
   constructor(private servcesService: ServicesService) {}
-  async getRequestsByUserId(userId: string) {
+  async getRequestsByCid(cid: number) {
     // Check services for user in teams
     const services = await this.servcesService.findServices({
       startDate: new Date().toISOString(),
@@ -18,7 +18,7 @@ export class RequestsService {
         for (const position of team.positions) {
           const users = position.users;
           for (const user of users) {
-            if (user.user.id === userId) {
+            if (user.user.cid === cid) {
               requests.push({
                 team: team,
                 position: position,
@@ -37,7 +37,7 @@ export class RequestsService {
   async updateRequestStatus(
     request: Request,
     status: 'accepted' | 'waiting' | 'declined',
-    userId: string,
+    cid: number,
   ) {
     const service = await this.servcesService.findServiceById(
       request.service.id,
@@ -49,7 +49,7 @@ export class RequestsService {
     service.teams.forEach((team) => {
       team.positions.forEach((position) => {
         position.users.forEach((user) => {
-          if (user.user.id === userId) {
+          if (user.user.cid === cid) {
             user.status = status;
           }
         });
@@ -58,7 +58,7 @@ export class RequestsService {
 
     const serviceDto: ServiceDto = {
       title: service.title,
-      date: service.date,
+      date: service.date.toISOString(),
       startTime: service.startTime,
       endTime: service.endTime,
       location: service.location,

@@ -58,19 +58,19 @@ export class ServicesController {
     return this.servicesService.deleteServiceById(id);
   }
 
-  @Get('requests')
+  @Get('requests/user')
   @UseGuards(JwtAuthGuard)
   getRequests(@Req() req: Request) {
     const user = req.user as User;
 
-    return this.reqestsService.getRequestsByUserId(user.id);
+    return this.reqestsService.getRequestsByCid(user.cid);
   }
 
-  @Put('requests')
+  @Put('requests/user')
   @UseGuards(JwtAuthGuard)
   updateRequestStatus(@Body() dto: RequestDto, @Req() req: Request) {
     const user = req.user as User;
 
-    return this.reqestsService.updateRequestStatus(dto, dto.status, user.id);
+    return this.reqestsService.updateRequestStatus(dto, dto.status, user.cid);
   }
 }

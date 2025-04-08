@@ -85,7 +85,7 @@ export class ServicesService {
     const oldTeams = service.teams;
 
     service.title = dto.title;
-    service.date = dto.date;
+    service.date = new Date(dto.date);
     service.startTime = dto.startTime;
     service.endTime = dto.endTime;
     service.location = dto.location;
@@ -132,14 +132,8 @@ export class ServicesService {
       month: '2-digit',
       day: '2-digit',
     });
-    const serviceStartTime = service.startTime.toLocaleTimeString('nl-NL', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    const serviceEndTime = service.endTime.toLocaleTimeString('nl-NL', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    const serviceStartTime = service.startTime;
+    const serviceEndTime = service.endTime;
     const serviceManagerName = service.service_manager.nameFull;
 
     for (const team of newTeams) {

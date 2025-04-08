@@ -19,10 +19,10 @@ export class Service {
   date: Date;
 
   @Prop({ required: true })
-  startTime: Date;
+  startTime: string;
 
   @Prop({ required: true })
-  endTime: Date;
+  endTime: string;
 
   // location, notes, service_manager, setlist
   @Prop({ required: true })
