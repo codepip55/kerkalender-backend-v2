@@ -5,6 +5,7 @@ import { Model, SortOrder } from 'mongoose';
 import { ServiceDto } from './dto/service.dto';
 import { EmailService, EmailTemplates } from '../email/email.service';
 import { ConfigService } from '@nestjs/config';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ServicesService {
@@ -12,6 +13,7 @@ export class ServicesService {
     @InjectModel('service') private serviceModel: Model<ServiceDocument>,
     private emailService: EmailService,
     private configService: ConfigService,
+    private usersService: UsersService,
   ) {}
 
   async findServices(qs: Record<string, string>) {
@@ -41,7 +43,9 @@ export class ServicesService {
       })
       .sort({ [sort]: sortDir })
       .skip(offset || (page - 1) * perPage)
-      .limit(perPage);
+      .limit(perPage)
+      .populate('service_manager')
+      .populate('teams.positions.users.user');
 
     // Count all services
     const count = await this.serviceModel.countDocuments({
@@ -62,7 +66,10 @@ export class ServicesService {
     };
   }
   async findServiceById(id: string) {
-    const service = await this.serviceModel.findById(id);
+    const service = await this.serviceModel
+      .findById(id)
+      .populate('service_manager')
+      .populate('teams.positions.users.user');
     if (!service) {
       throw new NotFoundException();
     }
@@ -77,7 +84,10 @@ export class ServicesService {
     return await service.save();
   }
   async updateServiceById(id: string, dto: ServiceDto) {
-    const service = await this.serviceModel.findById(id);
+    const service = await this.serviceModel
+      .findById(id)
+      .populate('service_manager')
+      .populate('teams.positions.users.user');
     if (!service) {
       throw new NotFoundException();
     }
@@ -85,7 +95,7 @@ export class ServicesService {
     const oldTeams = service.teams;
 
     service.title = dto.title;
-    service.date = dto.date;
+    service.date = new Date(dto.date);
     service.startTime = dto.startTime;
     service.endTime = dto.endTime;
     service.location = dto.location;
@@ -96,6 +106,7 @@ export class ServicesService {
     service.updatedAt = new Date();
 
     const newTeams = dto.teams;
+    // Log teams
 
     await service.save();
 
@@ -107,7 +118,10 @@ export class ServicesService {
     return service;
   }
   async deleteServiceById(id: string) {
-    const service = await this.serviceModel.deleteOne({ _id: id });
+    const service = await this.serviceModel
+      .findByIdAndDelete(id)
+      .populate('service_manager')
+      .populate('teams.positions.users.user');
     if (!service) {
       throw new NotFoundException();
     }
@@ -132,21 +146,28 @@ export class ServicesService {
       month: '2-digit',
       day: '2-digit',
     });
-    const serviceStartTime = service.startTime.toLocaleTimeString('nl-NL', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    const serviceEndTime = service.endTime.toLocaleTimeString('nl-NL', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    const serviceStartTime = service.startTime;
+    const serviceEndTime = service.endTime;
     const serviceManagerName = service.service_manager.nameFull;
+
+    if (oldTeams.length === 0 || newTeams.length === 0) {
+      // No teams, no need to send notifications
+      return;
+    }
 
     for (const team of newTeams) {
       const oldTeam = oldTeams.find((t) => t.name === team.name);
+      if (team.positions.length === 0) {
+        // No positions, no need to send notifications
+        continue;
+      }
       if (!oldTeam) {
         // New team
         for (const position of team.positions) {
+          if (position.users.length === 0) {
+            // No users, no need to send notifications
+            continue;
+          }
           for (const user of position.users) {
             usersToNotify.push({
               email: user.user.email,
@@ -170,7 +191,7 @@ export class ServicesService {
           );
           if (!oldPosition) {
             // New position
-            for (const user of position.users) {
+            for (const user of position.members) {
               usersToNotify.push({
                 email: user.user.email,
                 name: user.user.nameFull,
@@ -186,15 +207,20 @@ export class ServicesService {
             }
           } else {
             // Existing position
-            for (const user of position.users) {
+            for (const user of position.members) {
               const oldUser = oldPosition.users.find(
                 (u) => u.user.toString() === user.user.toString(),
               );
               if (!oldUser) {
                 // New user
+                // Get user details
+                const userDetails = await this.usersService.findById(
+                  user.user_id.toString(),
+                );
+
                 usersToNotify.push({
-                  email: user.user.email,
-                  name: user.user.nameFull,
+                  email: userDetails.email,
+                  name: userDetails.nameFull,
                   serviceTitle,
                   serviceDate,
                   serviceStartTime,

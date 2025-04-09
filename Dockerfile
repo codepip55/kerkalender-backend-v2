@@ -1,4 +1,4 @@
-FROM node:14-alpine as builder
+FROM node:20-alpine as builder
 
 ENV NODE_ENV build
 
@@ -7,13 +7,15 @@ WORKDIR /home/node
 
 COPY . /home/node
 
+RUN chown -R node:node /home/node
+
 RUN npm ci --force \
     && npm run build \
     && npm prune --production
 
 # ---
 
-FROM node:14-alpine
+FROM node:20-alpine
 
 ENV NODE_ENV production
 

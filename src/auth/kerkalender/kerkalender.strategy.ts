@@ -44,12 +44,14 @@ export class KerkalenderStrategy extends PassportStrategy(
     let user = null;
     try {
       user = await this.usersService.findByCidAndUpdate(response.data.cid, {
+        email: response.data.email,
         cid: response.data.cid,
         nameFull: response.data.name,
       });
     } catch (err) {
       if (err instanceof NotFoundException) {
         user = await this.usersService.createUser({
+          email: response.data.email,
           cid: response.data.cid,
           nameFull: response.data.name,
         });

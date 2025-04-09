@@ -21,8 +21,10 @@ export class User {
 
   @Prop({ required: true })
   updatedAt: Date;
+
+  @Prop({ required: true })
+  email: string;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);
-UserSchema.index({ nameFull: 'text' });
 export { UserSchema };

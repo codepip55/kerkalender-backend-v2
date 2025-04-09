@@ -19,10 +19,10 @@ export class Service {
   date: Date;
 
   @Prop({ required: true })
-  startTime: Date;
+  startTime: string;
 
   @Prop({ required: true })
-  endTime: Date;
+  endTime: string;
 
   // location, notes, service_manager, setlist
   @Prop({ required: true })
@@ -67,7 +67,7 @@ export class Service {
                 },
                 status: {
                   type: String,
-                  enum: ['accepted', 'waiting', 'rejected'],
+                  enum: ['accepted', 'waiting', 'declined'],
                   required: true,
                 },
               },
@@ -83,7 +83,7 @@ export class Service {
       name: string;
       users: {
         user: User;
-        status: 'accepted' | 'waiting' | 'rejected';
+        status: 'accepted' | 'waiting' | 'declined';
       }[];
     }[];
   }[];
