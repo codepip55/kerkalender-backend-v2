@@ -1,10 +1,11 @@
 import { Document } from 'mongoose';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Service } from '../../services/schemas/services.schema';
 import mongoose from 'mongoose';
 
 export type SetlistDocument = Setlist & Document;
 
+@Schema()
 export class Setlist {
   _id: string;
   get id() {
@@ -19,6 +20,7 @@ export class Setlist {
   service: Service;
 
   @Prop({
+    required: true,
     type: [
       {
         title: {
@@ -31,10 +33,6 @@ export class Setlist {
         },
         key: {
           type: String,
-          required: true,
-        },
-        bpm: {
-          type: Number,
           required: true,
         },
         vocalNotes: {
@@ -52,7 +50,6 @@ export class Setlist {
     title: string;
     artist: string;
     key: string;
-    bpm: number;
     vocalNotes: string;
     bandNotes: string;
   }[];

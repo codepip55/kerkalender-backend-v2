@@ -10,7 +10,6 @@ export class SetlistDto {
     title: string;
     artist: string;
     key: string;
-    bpm: number;
     vocalNotes: string;
     bandNotes: string;
   }[];

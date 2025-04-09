@@ -26,10 +26,13 @@ export class SetlistsService {
   }
   async createSetlist(dto: SetlistDto) {
     const setlist = new this.setlistModel({
-      ...dto,
+      service: dto.service,
+      songs: dto.songs,
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
-    await setlist.save();
+    const savedSetlist = await setlist.save();
+    return savedSetlist;
   }
   async updateSetlistById(id: string, dto: SetlistDto) {
     const setlist = await this.setlistModel.findById(id);
