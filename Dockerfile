@@ -7,6 +7,8 @@ WORKDIR /home/node
 
 COPY . /home/node
 
+RUN chown -R node:node /home/node
+
 RUN npm ci --force \
     && npm run build \
     && npm prune --production
