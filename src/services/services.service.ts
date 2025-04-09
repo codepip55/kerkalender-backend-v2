@@ -119,7 +119,7 @@ export class ServicesService {
   }
   async deleteServiceById(id: string) {
     const service = await this.serviceModel
-      .deleteOne({ _id: id })
+      .findByIdAndDelete(id)
       .populate('service_manager')
       .populate('teams.positions.users.user');
     if (!service) {
